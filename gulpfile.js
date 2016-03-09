@@ -13,7 +13,7 @@ var paths = {
         '!./public/js/almond.js'
     ],
     styles: {
-        src: './public/scss/',
+        src: './scss/',
         dst: './public/css/'
     }
 };

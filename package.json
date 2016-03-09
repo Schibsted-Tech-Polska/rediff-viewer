@@ -10,7 +10,7 @@
     "url": "https://github.com/Schibsted-Tech-Polska/pediff.git"
   },
   "scripts": {
-    "postinstall": "gulp build",
+    "build": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {},

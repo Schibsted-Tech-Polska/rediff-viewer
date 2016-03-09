@@ -1,0 +1,25 @@
+{
+  "name": "rediff-viewer",
+  "version": "0.0.1",
+  "description": "Report viewer for Rediff",
+  "author": "Lukasz Blacha <lukasz.blacha@schibsted.pl>",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Schibsted-Tech-Polska/pediff.git"
+  },
+  "scripts": {
+    "postinstall": "gulp build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-requirejs-optimize": "^0.3.2",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0"
+  }
+}

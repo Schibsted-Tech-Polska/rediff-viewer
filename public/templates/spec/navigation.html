@@ -1,0 +1,25 @@
+<div class="card-panel row blue lighten-1">
+    <div class="viewports">
+        <ul class="tabs">
+            <% _.each(model.getViewports(), function(viewport) { %>
+            <li class="tab col s2">
+                <a href="#" data-toggle="viewport--<%= viewport.name %>">
+                    <% if(viewport.icon) { %>
+                    <i class="material-icons"><%= viewport.icon %></i>
+                    <% } %>
+                    <%= viewport.name %>
+                    <span class="diff-badge <%= utils.getDiffColor(model.getDiff(viewport.name)) %>"><%= model.getDiff(viewport.name) %>%</span>
+                </a>
+            </li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <div class="environments">
+        <ul class="tabs">
+            <% _.each(model.getEnvironments(), function(environment) { %>
+            <li class="tab col s2"><a href="#" data-toggle="environment--<%= environment %>"><%= environment %></a></li>
+            <% }) %>
+        </ul>
+    </div>
+</div>

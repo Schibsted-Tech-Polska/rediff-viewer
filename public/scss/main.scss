@@ -1,0 +1,219 @@
+@import 'materialize';
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main, footer, header {
+    padding-left: 240px;
+}
+
+.logo {
+    height: 140px;
+
+    &:hover {
+        background: transparent!important;
+    }
+}
+
+.rediff-logo {
+    display: inline-block;
+    position: relative;
+    font-size: 40px;
+    vertical-align: middle;
+    z-index: 2;
+    margin: 40px 0 40px 55px;
+
+    span {
+        font-size: 1em;
+        color: #fff;
+        position: absolute;
+        display: inline-block;
+        left: 0;
+        top: 0;
+        width: (50/30)+em;
+        line-height: (50/30)+em;
+        text-align: center;
+        font-weight: 300;
+        -webkit-font-smoothing: subpixel-antialiased;
+
+        &:after {
+            content: "DIFF";
+            font-size: 0.6em;
+            color: #000;
+            position: absolute;
+            display: inline-block;
+            left: (83/30)+em;
+            line-height: (50/18)+em;
+            top: 0;
+            font-weight: 300;
+            -webkit-transition: all 0.3s ease-in-out 0.8s;
+            opacity: 0;
+            -webkit-transform: translate(-40px,0);
+            z-index: -2;
+        }
+    }
+
+    &:before, &:after{
+        content: "";
+        display: inline-block;
+        width: (46/30)+em;
+        height: (50/30)+em;
+        background: rgba(color('blue', 'lighten-1'), 0.7);
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        -webkit-transition: all 0.5s ease-in-out;
+        border: 1px solid rgba(255,255,255,0.1);
+        z-index: -1;
+    }
+
+    &:before {
+        margin-top: -(4/50)+em;
+        -webkit-transform: translate(-100px,0);
+    }
+    &:after {
+        margin-top: (4/50)+em;
+        -webkit-transform: translate(100px,0);
+    }
+
+    &.in {
+        &:before {
+            opacity: 1;
+            -webkit-transform: translate(0,0) skew(10deg) rotate3d(-1,1,0, 180deg);
+        }
+        &:after {
+            opacity: 1;
+            -webkit-transform: translate(0,0) skew(-10deg) rotate3d(1,-1,0, 180deg);
+        }
+        span:after {
+            opacity: 1;
+            -webkit-transform: translate(0,0);
+        }
+    }
+}
+
+
+header {
+    height: $toast-height;
+    line-height: $toast-height;
+
+    .tabs {
+        width: 400px!important;
+    }
+
+    .viewports {
+        float: left;
+    }
+    .environments {
+        float: right;
+    }
+}
+
+.navigation, .details {
+    .card-panel {
+        margin: 0;
+        border-radius: 0;
+    }
+}
+
+.details {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 240px;
+
+    .difference {
+        text-align: center;
+        line-height: $button-height;
+    }
+}
+
+.navigation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 240px;
+
+    .tabs {
+        background: transparent;
+
+        .tab a {
+            color: color('grey', 'lighten-3');
+            position: relative;
+
+            &:hover,
+            &.active {
+                color: #fff;
+            }
+        }
+
+        .indicator {
+            background: #fff;
+        }
+    }
+
+    .viewports {
+        float: right;
+        width: 40%;
+    }
+
+    .environments {
+        float: left;
+        width: 40%;
+    }
+}
+
+.material-icons {
+    vertical-align: middle;
+    margin-top: -3px;
+}
+
+html, body, .current-view-container {
+    height: 100%;
+}
+
+.card-offset {
+    margin-top: 40%;
+}
+
+.diff-badge {
+    @include box-sizing(border-box);
+    padding: 0 3px;
+    text-align: center;
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 12px;
+    color: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: inline-block;
+}
+
+.result-view {
+    padding: 130px 0;
+
+    .images {
+        text-align: center;
+
+        img {
+            display: none;
+            max-width: 100%;
+
+            &.active {
+                display: inline-block;
+            }
+        }
+    }
+
+    &.ready {
+        .loader {
+            display: none;
+        }
+    }
+}

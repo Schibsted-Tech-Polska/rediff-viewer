@@ -30,7 +30,6 @@ define([], function() {
                         }
                     });
                 } else {
-                    console.log('read from cache', url);
                     progress[i] = 100;
                 }
 

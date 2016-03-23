@@ -3,12 +3,13 @@ define([
     'utils',
     'app/view',
     'text!templates/spec/navigation.html',
+    'text!templates/spec/viewports.html',
     'text!templates/radial-progress.html'
-], function(store, utils, View, viewTemplate, gaugeTemplate) {
+], function(store, utils, View, viewTemplate, viewportsTemplate, gaugeTemplate) {
 
-    function renderGauge(icon) {
+    function renderGauge(icon, progress) {
         return _.template(gaugeTemplate, {
-            progress: 0,
+            progress: progress,
             content: '<i class="material-icons">' + icon + '</i>',
             color: {
                 inner: 'blue lighten-1',
@@ -22,24 +23,12 @@ define([
         viewports: $([])
     };
 
-    var viewports = {};
-    var viewportNames = [];
-    var environments = [];
-
     var NavigationView = View.extend({
         events: {
             'click [data-toggle="environment"]': 'onEnvironmentClick',
             'click [data-toggle="viewport"]': 'onViewportClick'
         },
         initialize: function() {
-            viewports = store.getViewports();
-            viewportNames = _.keys(viewports);
-
-            environments = _.keys(store.getEnvironments());
-            var idx = environments.indexOf('diff');
-            environments.splice(idx, 1);
-            environments.unshift('diff');
-
             this.listenTo(store, 'load:report', this.onReportLoaded.bind(this));
             this.listenTo(store, 'change:spec', this.onSpecChange.bind(this));
             this.listenTo(store, 'change:environment', this.onEnvironmentChange.bind(this));
@@ -51,11 +40,7 @@ define([
         render: function() {
             this.model = store.getCurrentSpec();
             this.$el.html(_.template(viewTemplate, {
-                model: this.model,
-                utils: utils,
-                viewports: viewports,
-                environments: environments,
-                renderGauge: renderGauge
+                environments: store.getEnvironments()
             }));
 
             $dom = {
@@ -75,12 +60,6 @@ define([
                 this.model = spec;
                 this.onEnvironmentChange(store.getCurrentEnvironment());
                 this.onViewportChange(store.getCurrentViewport());
-
-                $dom.viewports.find('[data-progress]').data('progress', 0);
-                spec.get('tests').results.forEach(function(result) {
-                    $dom.viewports.find('[data-viewport="' + result.get('viewport') + '"] [data-progress]')
-                        .attr('data-progress', parseInt(result.get('diff')));
-                });
             }
         },
 
@@ -89,16 +68,29 @@ define([
         },
 
         onViewportChange: function(viewport) {
-            $dom.viewports.removeClass('active disabled');
-            this.$('[data-viewport=' + store.getCurrentViewport() + ']').parent().addClass('active');
-            if (this.model) {
-                $dom.viewports.each(function(id, elm) {
-                    var $elm = $(elm);
-                    if (!this.model.hasViewport($elm.find('a').data('viewport'))) {
-                        $elm.addClass('disabled');
-                    }
-                }.bind(this));
-            }
+            var currentSpec = store.getCurrentSpec();
+            var available = currentSpec.getAvailableViewports();
+            var viewports = store.getViewports();
+            var data = _.keys(viewports).map(function(viewportName) {
+                var result = currentSpec.getResultForViewport(viewportName);
+                var className = '';
+                if (available.indexOf(viewportName) < 0) {
+                    className = 'disabled';
+                } else if (viewportName === viewport) {
+                    className = 'active';
+                }
+
+                return {
+                    name: viewportName,
+                    className: className,
+                    diff: result ? result.get('diff') : 0,
+                    icon: viewports[viewportName].icon
+                };
+            });
+            this.$('#viewports').html(_.template(viewportsTemplate, {
+                viewports: data,
+                renderGauge: renderGauge
+            }));
         },
 
         // Event listeners

@@ -1,0 +1,9 @@
+<ul>
+    <% viewports.forEach(function(viewport) { %>
+    <li class="<%= viewport.className %>">
+        <a href="#" data-toggle="viewport" data-viewport="<%= viewport.name %>">
+            <%= renderGauge(viewport.icon, viewport.diff) %>
+        </a>
+    </li>
+    <% }) %>
+</ul>

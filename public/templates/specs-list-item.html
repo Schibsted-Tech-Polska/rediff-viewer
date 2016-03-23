@@ -1,8 +1,8 @@
 <% var progress = parseInt(model.get('tests').results.length / model.get('tests').total * 100) %>
 <a href="#!/spec/<%= model.get('slug') %>" class="collection-item lighten-1" data-slug="<%= model.get('slug') %>">
     <% if(progress < 100) { %>
-    <div class="progress white">
-        <div class="determinate blue lighten-5" style="width: <%= progress %>%"></div>
+    <div class="progress transparent">
+        <div class="determinate" style="width: <%= progress %>%"></div>
     </div>
     <% } %>
     <div class="content">

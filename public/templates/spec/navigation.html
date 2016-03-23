@@ -1,20 +1,10 @@
 <nav>
     <div class="nav-wrapper">
-        <div class="viewports right">
-            <ul>
-                <% _.keys(viewports).forEach(function(viewport) { %>
-                    <li>
-                        <a href="#" data-toggle="viewport" data-viewport="<%= viewport %>">
-                            <%= renderGauge(viewports[viewport].icon) %>
-                        </a>
-                    </li>
-                <% }) %>
-            </ul>
-        </div>
+        <div id="viewports" class="viewports right"></div>
 
         <div class="environments">
             <ul class="tabs transparent">
-                <% environments.forEach(function(environment) { %>
+                <% _.keys(environments).forEach(function(environment) { %>
                 <li class="tab col s2">
                     <a href="#<%= environment %>" data-toggle="environment" data-env="<%= environment %>" class="white-text">
                         <%= environment %>

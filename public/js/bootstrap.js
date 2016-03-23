@@ -10,8 +10,7 @@ require.config({
 });
 
 define([
-    'application',
-    'app/router'
-], function(Application, Router) {
-    Application.initialize(new Router());
+    'application'
+], function(Application) {
+    Application();
 });

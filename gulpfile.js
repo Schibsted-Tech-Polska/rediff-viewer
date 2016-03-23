@@ -38,8 +38,7 @@ gulp.task('js', function() {
             optimize: 'none',
             paths: {
                 'text': 'vendor/requirejs/text',
-                'templates': '../templates',
-                'materialize': 'vendor/materialize.amd'
+                'templates': '../templates'
             },
             out: "bootstrap.min.js"
         }))

@@ -1,0 +1,86 @@
+.logo {
+  height: 140px;
+
+  &:hover {
+    background: transparent!important;
+  }
+}
+
+.rediff-logo {
+  display: inline-block;
+  position: relative;
+  font-size: 40px;
+  vertical-align: middle;
+  z-index: 2;
+  margin: 40px 0 40px 55px;
+
+  span {
+    font-size: 1em;
+    color: #fff;
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    top: 0;
+    width: (50/30)+em;
+    line-height: (50/30)+em;
+    text-align: center;
+    font-weight: 300;
+    -webkit-font-smoothing: subpixel-antialiased;
+
+    &:after {
+      content: "DIFF";
+      font-size: 0.6em;
+      color: #000;
+      position: absolute;
+      display: inline-block;
+      left: (83/30)+em;
+      line-height: (50/18)+em;
+      top: 0;
+      font-weight: 300;
+      -webkit-transition: all 0.3s ease-in-out 0.8s;
+      opacity: 0;
+      -webkit-transform: translate(-40px,0);
+      z-index: -2;
+    }
+  }
+
+  &:before, &:after {
+    content: "";
+    display: inline-block;
+    width: (46/30)+em;
+    height: (50/30)+em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+    box-shadow: -2px 0 3px -1px rgba(0,0,0,.3);
+    z-index: -1;
+  }
+
+  &:before {
+    margin-top: -(4/50)+em;
+    -webkit-transform: translate(-100px,0);
+    background-color: color('red', 'accent-1');
+  }
+  &:after {
+    margin-top: (4/50)+em;
+    -webkit-transform: translate(100px,0);
+    background-color: rgba(color('light-blue', 'lighten-1'), 0.7);
+  }
+
+  &.in {
+    &:before {
+      opacity: 1;
+      -webkit-transform: translate(0,0) skew(10deg) rotate3d(-1,1,0, 180deg);
+    }
+    &:after {
+      opacity: 1;
+      -webkit-transform: translate(0,0) skew(-10deg) rotate3d(1,-1,0, 180deg);
+    }
+    span:after {
+      opacity: 1;
+      -webkit-transform: translate(0,0);
+    }
+  }
+}

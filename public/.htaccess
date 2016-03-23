@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve gzipped assets when possible
+    RewriteCond %{HTTP:Accept-Encoding} \b(x-)?gzip\b
+    RewriteCond %{REQUEST_FILENAME}.gz -s
+    RewriteRule ^(.*(\.png|\.jpg)$) $1.gz [L]
+
+    # without it, Content-Type will be "application/x-gzip"
+    # also add a content-encoding header to tell the browser to decompress
+    <FilesMatch \.png\.gz$>
+        ForceType image/png
+        Header set Content-Encoding gzip
+    </FilesMatch>
+
+    <FilesMatch \.jpg\.gz$>
+        ForceType image/jpeg
+        Header set Content-Encoding gzip
+    </FilesMatch>
+</IfModule>

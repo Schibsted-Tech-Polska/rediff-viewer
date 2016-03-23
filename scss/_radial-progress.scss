@@ -1,0 +1,103 @@
+$percentage-font-size: 22px;
+$circle-size: 60px;
+$inset-size: $circle-size - 8;
+
+$percentage-font-size-small: 14px;
+$circle-size-small: 40px;
+$inset-size-small: $circle-size-small - 6;
+
+.radial-progress {
+  width: $circle-size;
+  height: $circle-size;
+  border-radius: 50%;
+  .circle {
+    .mask, .fill {
+      width: $circle-size;
+      height: $circle-size;
+      position: absolute;
+      border-radius: 50%;
+    }
+    .mask, .fill {
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transition: transform 1s;
+      border-radius: 50%;
+    }
+    .mask {
+      clip: rect(0px, $circle-size, $circle-size, $circle-size/2);
+      .fill {
+        clip: rect(0px, $circle-size/2, $circle-size, 0px);
+        background-color: $primary-color;
+      }
+    }
+  }
+  .inset {
+    width: $inset-size;
+    height: $inset-size;
+    position: absolute;
+    margin-left: ($circle-size - $inset-size)/2;
+    margin-top: ($circle-size - $inset-size)/2;
+
+    border-radius: 50%;
+    .percentage {
+      position: absolute;
+      top: ($inset-size - $percentage-font-size) / 2;
+      left: 0;
+      height: $percentage-font-size;
+      width: 100%;
+      overflow: hidden;
+
+      text-align: center;
+
+      line-height: 1;
+      .numbers {
+        width: 100%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        font-weight: 800;
+        font-size: inherit;
+      }
+    }
+  }
+
+  @for $i from 0 through 100 {
+    &[data-progress="#{$i}"] {
+      .circle {
+        .mask.full, .fill {
+          transform: rotate($i * 1.8deg);
+        }
+        .fill.fix {
+          transform: rotate($i * 2 * 1.8deg);
+        }
+      }
+    }
+  }
+}
+
+.radial-progress.size-small {
+  width: $circle-size-small;
+  height: $circle-size-small;
+  .circle {
+    .mask, .fill {
+      width: $circle-size-small;
+      height: $circle-size-small;
+    }
+    .mask {
+      clip: rect(0px, $circle-size-small, $circle-size-small, $circle-size-small/2);
+      .fill {
+        clip: rect(0px, $circle-size-small/2, $circle-size-small, 0px);
+      }
+    }
+  }
+  .inset {
+    width: $inset-size-small;
+    height: $inset-size-small;
+    margin-left: ($circle-size-small - $inset-size-small)/2;
+    margin-top: ($circle-size-small - $inset-size-small)/2;
+    .percentage {
+      top: ($inset-size-small - $percentage-font-size-small) / 2;
+      height: $percentage-font-size-small;
+    }
+  }
+}

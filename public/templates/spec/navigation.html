@@ -1,25 +1,27 @@
-<div class="card-panel row blue lighten-1">
-    <div class="viewports">
-        <ul class="tabs">
-            <% _.each(model.getViewports(), function(viewport) { %>
-            <li class="tab col s2">
-                <a href="#" data-toggle="viewport--<%= viewport.name %>">
-                    <% if(viewport.icon) { %>
-                    <i class="material-icons"><%= viewport.icon %></i>
-                    <% } %>
-                    <%= viewport.name %>
-                    <span class="diff-badge <%= utils.getDiffColor(model.getDiff(viewport.name)) %>"><%= model.getDiff(viewport.name) %>%</span>
-                </a>
-            </li>
-            <% }) %>
-        </ul>
-    </div>
+<nav>
+    <div class="nav-wrapper">
+        <div class="viewports right">
+            <ul>
+                <% _.keys(viewports).forEach(function(viewport) { %>
+                    <li>
+                        <a href="#" data-toggle="viewport" data-viewport="<%= viewport %>">
+                            <%= renderGauge(viewports[viewport].icon) %>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
 
-    <div class="environments">
-        <ul class="tabs">
-            <% _.each(model.getEnvironments(), function(environment) { %>
-            <li class="tab col s2"><a href="#" data-toggle="environment--<%= environment %>"><%= environment %></a></li>
-            <% }) %>
-        </ul>
+        <div class="environments">
+            <ul class="tabs transparent">
+                <% environments.forEach(function(environment) { %>
+                <li class="tab col s2">
+                    <a href="#<%= environment %>" data-toggle="environment" data-env="<%= environment %>" class="white-text">
+                        <%= environment %>
+                    </a>
+                </li>
+                <% }) %>
+            </ul>
+        </div>
     </div>
-</div>
+</nav>

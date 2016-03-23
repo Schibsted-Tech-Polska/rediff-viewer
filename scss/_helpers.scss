@@ -1,3 +1,12 @@
+@mixin clearfix {
+    overflow: hidden;
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
 %clearfix {
     @include clearfix();
 }

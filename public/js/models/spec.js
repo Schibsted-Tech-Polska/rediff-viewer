@@ -1,42 +1,36 @@
-define([
-    'jquery',
-    'backbone',
-    'lodash',
-    'collections/results'
-], function($, Backbone, _, ResultsCollection) {
-    var Model = Backbone.Model.extend({
+define([], function() {
+    var SpecModel = Backbone.Model.extend({
         defaults: {},
         parse: function(data) {
-            var result = _.omit(data, []);
-            result.results = new ResultsCollection(data.results, {parse: true});
-            return result;
+            return data;
         },
         getAverageDiff: function() {
-            return Math.ceil(this.get('results').reduce(function(sum, result) {
+            var results = this.get('tests').results;
+            return Math.ceil(results.reduce(function(sum, result) {
                     return sum + result.get('diff');
-                }, 0) / this.get('results').length);
+                }, 0) / results.length);
         },
         getSlug: function() {
             return this.get('name').replace(/ /g, '-')
         },
-        getEnvironments: function() {
-            var environments = _.keys(this.get('results').at(0).get('screenshots'));
-
-            if(_.isArray(environments) && environments.indexOf('diff') > -1) {
-                environments = ['diff'].concat(_.without(environments, 'diff'));
-            }
-
-            return environments;
+        hasViewport: function(name) {
+            return this.getViewports().indexOf(name) >= 0;
         },
         getViewports: function() {
-            var viewports = this.get('results').pluck('viewport');
-            return viewports;
+            return _.map(this.get('tests').results, function(result) {
+                return result.get('viewport');
+            });
         },
-        getDiff: function(viewport) {
-            return Math.ceil(this.get('results').find(function(model) {
-                return model.get('viewport').name === viewport;
-            }).get('diff'));
+        getDiffForViewport: function(viewport) {
+            return Math.ceil(this.get('tests').results.find(function(model) {
+                return model.get('viewport') === viewport;
+            }).diff);
+        },
+        getResultForViewport: function(viewport) {
+            return this.get('tests').results.find(function(model) {
+                return model.get('viewport') === viewport;
+            });
         }
     });
-    return Model;
+    return SpecModel;
 });

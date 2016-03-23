@@ -1,0 +1,25 @@
+<%
+    var size = size || 'normal';
+    var progress = progress === undefined ? 100 : progress;
+    var content = content || ((parseInt(progress * 100) / 100) + '%');
+    var color = color || {};
+    color.inner = color.inner || 'white';
+    color.ring = color.ring || 'grey lighten-4';
+    color.progress = color.progress || 'red lighten-2';
+%>
+<div class="radial-progress size-<%= size %> <%= color.ring %>" data-progress="<%= parseInt(progress) %>">
+    <div class="circle">
+        <div class="mask full">
+            <div class="fill <%= color.progress %>"></div>
+        </div>
+        <div class="mask half">
+            <div class="fill <%= color.progress %>"></div>
+            <div class="fill <%= color.progress %> fix"></div>
+        </div>
+    </div>
+    <div class="inset <%= color.inner %>">
+        <div class="percentage">
+            <%= content %>
+        </div>
+    </div>
+</div>

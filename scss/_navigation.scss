@@ -1,0 +1,41 @@
+.navigation {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 240px;
+  height: 100px;
+
+  .nav-wrapper {
+    padding: 0 $card-padding;
+  }
+  .viewports, .environments {
+    li {
+      position: relative;
+    }
+  }
+  .viewports {
+    .disabled {
+      opacity: .2;
+      pointer-events: none;
+    }
+    a {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .percentage {
+      height: 64px;
+      top: -6px;
+    }
+  }
+  .environments {
+    float: left;
+    margin: 26px 0;
+    min-width: 50%;
+    width: auto;
+  }
+
+  nav {
+    background-color: color('blue', 'lighten-1');
+    height: 100%;
+  }
+}

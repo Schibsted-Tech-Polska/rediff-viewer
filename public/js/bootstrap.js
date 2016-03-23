@@ -4,44 +4,31 @@ require.config({
     paths: {
         'text': 'vendor/requirejs/text',
         'templates': '../templates',
-        'jquery': [
-            '//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min',
-            'vendor/jquery-1.11.2.min'
+        'hammerjs': [
+            '//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.6/hammer.min',
+            'vendor/hammer.min'
         ],
-        'lodash': [
-            '//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min',
-            'vendor/lodash-2.4.1.min'
-        ],
-        'backbone': [
-            '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min',
-            'vendor/backbone-1.1.2.min'
-        ],
-        'materialize': 'vendor/materialize.amd'
+        'materialize': [
+            '//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min',
+            'vendor/materialize.min'
+        ]
     },
     shim: {
-        'backbone': {
-            deps: ['underscore', 'jquery'],
-            exports: 'Backbone'
-        },
         'materialize': {
-            deps: ['jquery']
-        }
-    },
-    map: {
-        '*': {
-            'underscore': 'lodash'
+            deps: ['hammerjs']
+        },
+        'hammerjs': {
+            exports: 'Hammer'
         }
     },
     urlArgs: "bust=" + (new Date()).getTime()
 });
 
 define([
-    'jquery',
-    'backbone',
-    'lodash',
     'application',
-    'router',
-    'materialize'
-], function($, Backbone, _, Application, Router, Materialize) {
+    'app/router',
+    'materialize',
+    'hammerjs'
+], function(Application, Router) {
     Application.initialize(new Router());
 });

@@ -39,9 +39,6 @@ gulp.task('js', function() {
             paths: {
                 'text': 'vendor/requirejs/text',
                 'templates': '../templates',
-                'jquery': 'empty:',
-                'lodash': 'empty:',
-                'backbone': 'empty:',
                 'materialize': 'vendor/materialize.amd'
             },
             out: "bootstrap.min.js"

@@ -1,8 +1,12 @@
-<li class="hidden">
-    <a href="#!/spec/<%= model.getSlug() %>">
-        <%= model.get('name') %>
-        <span class="badge <%= utils.getDiffColor(model.getAverageDiff()) %>-text"
-              data-tooltip="<%= model.getAverageDiff() %>% of difference"
-              data-position="right"><%= model.getAverageDiff() %>%</span>
-    </a>
-</li>
+<% var progress = parseInt(model.get('tests').results.length / model.get('tests').total * 100) %>
+<a href="#!/spec/<%= model.get('slug') %>" class="collection-item lighten-1" data-slug="<%= model.get('slug') %>">
+    <% if(progress < 100) { %>
+    <div class="progress white">
+        <div class="determinate blue lighten-5" style="width: <%= progress %>%"></div>
+    </div>
+    <% } %>
+    <div class="content">
+        <span class="label"><%= model.get('name') %></span>
+        <span><%= renderGauge(model.getAverageDiff()) %></span>
+    </div>
+</a>

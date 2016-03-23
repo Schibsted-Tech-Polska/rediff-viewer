@@ -1,91 +1,94 @@
 define([
     'utils',
-    'views/specs-list',
-    'models/run',
-    'collections/specs'
-], function(utils, SpecsListView, Run, SpecsCollection) {
-    var instance,
-        Application = {
-            initialize: function(router) {
-                this.$container = $('.current-view-container');
-                $('.rediff-logo').addClass('in');
+    'app/store',
+    'app/keyboard',
+    'views/error',
+    'views/spec',
+    'views/summary',
+    'views/components/sidenav',
+    'views/components/searchbox'
+], function(utils, store, keyboard, ErrorView, SpecView, SummaryView, SidenavView, SearchboxView) {
+    var instance;
+    var views = [];
 
-                this.initializeRouter(router);
-                this.viewReport();
-            },
-            initializeRouter: function(router) {
-                this.router = router;
+    var Application = {
+        initialize: function(router) {
+            $('.rediff-logo').addClass('in');
 
-                this.listenToOnce(this, 'ready', function() {
-                    this.router.on('viewChange', function(view, options) {
-                        this.setCurrentView(view, options);
-                    }, this);
+            this.initializeRouter(router);
 
-                    this.router.start();
-                }.bind(this));
-            },
-            loadReport: function() {
-                if(window.report) {
-                    var deferred = new $.Deferred();
+            new SidenavView({
+                el: $('#spec-list')
+            });
 
-                    deferred.resolve(window.report);
+            new SearchboxView({
+                el: $('#searchbox-container')
+            });
 
-                    return deferred;
-                } else {
-                    var url = window.location.href;
+            views['error'] = new ErrorView({
+                el: $('#error-container')
+            });
+            views['summary'] = new SummaryView({
+                el: $('#summary-container')
+            });
+            views['spec'] = new SpecView({
+                el: $('#spec-container')
+            });
 
-                    url = url.replace(window.location.hash, '');
+            this.viewReport();
+        },
+        initializeRouter: function(router) {
+            this.router = router;
 
-                    if(url.indexOf('public/index.html') > -1) {
-                        url = url.replace('public/index.html', 'public/results/report.json');
-                    } else {
-                        url += 'results/report.json';
-                    }
+            this.listenToOnce(store, 'load:report', function() {
+                this.router.on('change:view', function(view, options) {
+                    this.setCurrentView(view, options);
+                }, this);
 
-                    return $.get(url);
-                }
-            },
-            viewReport: function() {
-                this.loadReport()
-                    .done(function(data) {
-                        utils.storage.use('application').set('report', data);
-
-                        this.run = new Run(data, {parse: true});
-
-                        this.specsView = new SpecsListView({
-                            el: $('.specs-list-view-container'),
-                            collection: new SpecsCollection(data.specs, {parse: true})
-                        });
-                        this.specsView.render();
-
-                        this.listenTo(this.router, 'route', this.specsView.trigger.bind(this.specsView, 'route'));
-
-                        this.trigger('ready');
-                    }.bind(this))
-                    .fail(function() {
-                        this.router.navigate('!/error', {
-                            trigger: true,
-                            replace: false
-                        });
-                    }.bind(this));
-            },
-            setCurrentView: function(View, options) {
-                if(this.currentView) {
-                    this.currentView.undelegateEvents();
-                    this.currentView.stopListening();
-                    this.$container.empty();
-
-                    if(_.isFunction(this.currentView.destroy)) {
-                        this.currentView.destroy();
-                    }
-                }
-
-                this.currentView = new View({
-                    el: this.$container
-                }, options || {});
-                this.currentView.render();
+                this.router.start();
+            }.bind(this));
+        },
+        loadReport: function() {
+            var url = window.location.href;
+            if (url.indexOf('#') > 0) {
+                url = url.substr(0, url.indexOf('#'));
             }
-        };
+
+            url = url.replace(window.location.hash, '');
+
+            if(url.indexOf('public/index.html') > -1) {
+                url = url.replace('public/index.html', 'public/results/report.json');
+            } else {
+                url += 'results/report.json';
+            }
+
+            return $.get(url);
+        },
+        viewReport: function() {
+            this.loadReport()
+                .done(function(data) {
+                    store.setReport(data);
+                    keyboard.initialize();
+                    if (!store.isCompleteReport()) {
+                        setTimeout(this.viewReport.bind(this), 10000);
+                    }
+                }.bind(this))
+                .fail(function() {
+                    this.router.navigate('!/error', {
+                        trigger: true,
+                        replace: false
+                    });
+                }.bind(this));
+
+        },
+        setCurrentView: function(name, options) {
+            if (views[name]) {
+                $('main > .container').addClass('hidden');
+                $('main > #' + name + '-container').removeClass('hidden');
+                views[name].render(options);
+            }
+        }
+    };
 
     if(!instance) {
         instance = _.extend(Application, Backbone.Events);

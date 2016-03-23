@@ -1,4 +1,5 @@
 define([], function() {
+    var cache = {};
     var Loader = {
         fetch: function(arr) {
             var deferreds = [];
@@ -12,21 +13,26 @@ define([], function() {
             }
 
             arr.forEach(function(url, i) {
-                progress[i] = 0;
-
-                var request = $.ajax({
-                    url: url,
-                    xhr: function() {
-                        var xhr = new window.XMLHttpRequest();
-                        xhr.addEventListener("progress", function(event) {
-                            if(event.lengthComputable) {
-                                progress[i] = event.loaded / event.total;
-                                response.notify(getProgress());
-                            }
-                        }, false);
-                        return xhr;
-                    }
-                });
+                var request = cache[url];
+                if (!request) {
+                    progress[i] = 0;
+                    request = cache[url] = $.ajax({
+                        url: url,
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.addEventListener("progress", function(event) {
+                                if(event.lengthComputable) {
+                                    progress[i] = event.loaded / event.total;
+                                    response.notify(getProgress());
+                                }
+                            }, false);
+                            return xhr;
+                        }
+                    });
+                } else {
+                    console.log('read from cache', url);
+                    progress[i] = 100;
+                }
 
                 deferreds.push(request);
             });

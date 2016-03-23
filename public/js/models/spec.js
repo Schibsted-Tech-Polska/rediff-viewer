@@ -30,6 +30,11 @@ define([], function() {
             return this.get('tests').results.find(function(model) {
                 return model.get('viewport') === viewport;
             });
+        },
+        getAvailableViewports: function() {
+            return this.get('tests').results.map(function(result) {
+                return result.get('viewport');
+            });
         }
     });
     return SpecModel;

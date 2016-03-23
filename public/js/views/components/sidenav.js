@@ -18,6 +18,7 @@ define([
         renderGauge: function(progress) {
             return _.template(progressGauge, {
                 progress: progress,
+                content: isNaN(progress) ? '<i class="material-icons">schedule</i>' : (progress + '%'),
                 size: 'small',
                 color: {
                     inner: 'white'
@@ -51,6 +52,7 @@ define([
             this.$el.html(html);
 
             this.$links = this.$('a');
+            this.onChangeSpec(store.getCurrentSpec());
         },
         onSearchTermChange: function(val) {
             this.$links.each(function(idx, elm) {

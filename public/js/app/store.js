@@ -18,8 +18,8 @@ define([
                 });
                 report.specs[idx] = new SpecModel(spec, {parse: true});
             });
+            report.environments.diff = {};
             if (firstTime) {
-                report.environments.diff = {};
                 this.setCurrentEnvironment('diff');
                 this.setCurrentViewport(_.keys(report.viewports)[0]);
             }

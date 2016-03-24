@@ -9,10 +9,13 @@ define([
         return url ? 'results/' + url : undefined;
     }
 
+    var $images = $([]);
+
     var ResultView = View.extend({
         events: {},
         initialize: function() {
             this.fetched = false;
+            $images = this.$('.images img');
             this.listenTo(store, 'load:report', this.initializeEnvironments.bind(this));
             this.listenTo(store, 'change:environment', this.onChange.bind(this));
             this.listenTo(store, 'change:viewport', this.onChange.bind(this));
@@ -23,9 +26,9 @@ define([
         render: function() {
             var spec = store.getCurrentSpec();
             if (spec) {
-                this.$el.removeClass('ready');
                 var result = spec.getResultForViewport(store.getCurrentViewport());
                 if (result) {
+                    this.$el.removeClass('ready');
                     var environment = store.getCurrentEnvironment();
                     if(this.fetched) {
                         this.renderImages(environment);
@@ -50,18 +53,19 @@ define([
                                 this.$('.progress .determinate').width(progress + '%')
                             }.bind(this));
                     }
+                } else {
+                    $images.removeClass('active');
                 }
             }
         },
         renderImages: function() {
             var spec = store.getCurrentSpec();
-            var images = this.$('.images img');
-            images.removeClass('active');
+            $images.removeClass('active');
             if (spec) {
                 var result = spec.getResultForViewport(store.getCurrentViewport());
                 if (result) {
                     var environment = store.getCurrentEnvironment();
-                    images.each(function(idx, elm) {
+                    $images.each(function(idx, elm) {
                         var $elm = $(elm);
                         var env = $elm.attr('data-environment');
                         if (env === environment) {

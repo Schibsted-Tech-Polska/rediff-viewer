@@ -53,7 +53,7 @@ define([
         });
     }
 
-    var Application = function(r) {
+    var Application = function() {
         new SidenavView({
             el: $('#spec-list')
         });

@@ -6,7 +6,7 @@ define([
     'text!templates/specs-list-item.html',
     'text!templates/radial-progress.html'
 ], function(store, app, View, itemTemplate, progressGauge) {
-    var View = View.extend({
+    var SidenavView = View.extend({
         events: {},
         initialize: function() {
             this.$links = $([]);
@@ -65,5 +65,5 @@ define([
             });
         }
     });
-    return View;
+    return SidenavView;
 });

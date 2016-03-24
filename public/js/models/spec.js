@@ -11,9 +11,6 @@ define([], function() {
                     return sum + result.get('diff');
                 }, 0) / results.length) || 0;
         },
-        getSlug: function() {
-            return this.get('name').replace(/ /g, '-')
-        },
         hasViewport: function(name) {
             return this.getViewports().indexOf(name) >= 0;
         },
@@ -21,13 +18,6 @@ define([], function() {
             return _.map(this.get('tests').results, function(result) {
                 return result.get('viewport');
             });
-        },
-        getDiffForViewport: function(viewport) {
-            var result = this.getResultForViewport(viewport);
-            if (!result) {
-                return 0;
-            }
-            return Math.ceil(result.get('diff'));
         },
         getResultForViewport: function(viewport) {
             return this.get('tests').results.find(function(model) {

@@ -54,12 +54,6 @@ define([
             return report.metadata.tests.completed === report.metadata.tests.count;
         },
 
-        getSpecBySlug: function(slug) {
-            return !report ? null : _.find(report.specs, function(spec) {
-                return spec.get('slug') === slug;
-            });
-        },
-
         setCurrentViewport: function(viewport) {
             currentViewport = viewport;
             this.trigger('change:viewport', viewport);

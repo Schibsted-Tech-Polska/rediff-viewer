@@ -54,17 +54,16 @@ define([
             this.$('.images').html(html);
             this.$images = this.$('.images img');
 
-            if(environment) {
-                this.$images.filter('[data-environment="' + environment + '"]').addClass('active');
-            } else {
-                this.$images.first().addClass('active');
-            }
+            this.onEnvironmentChange();
         },
-        onEnvironmentChange: function() {
-            this.$images
-                .removeClass('active')
-                .filter('[data-environment="' + store.getCurrentEnvironment() + '"]')
-                .addClass('active');
+        onEnvironmentChange: function(env) {
+            if (this.$images) {
+                if(env) {
+                    this.$images.filter('[data-environment="' + env + '"]').addClass('active');
+                } else {
+                    this.$images.first().addClass('active');
+                }
+            }
         }
     });
     return ResultView;

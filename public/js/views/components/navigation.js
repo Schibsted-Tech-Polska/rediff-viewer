@@ -39,7 +39,6 @@ define([
         },
 
         render: function() {
-            this.model = store.getCurrentSpec();
             this.$el.html(_.template(viewTemplate, {
                 environments: store.getEnvironments()
             }));
@@ -58,7 +57,6 @@ define([
 
         onSpecChange: function(spec) {
             if (spec) {
-                this.model = spec;
                 this.onEnvironmentChange(store.getCurrentEnvironment());
                 this.onViewportChange(store.getCurrentViewport());
             }

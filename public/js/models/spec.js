@@ -24,7 +24,7 @@ define([], function() {
         getDiffForViewport: function(viewport) {
             return Math.ceil(this.get('tests').results.find(function(model) {
                 return model.get('viewport') === viewport;
-            }).diff);
+            }).get('diff') || 0);
         },
         getResultForViewport: function(viewport) {
             return this.get('tests').results.find(function(model) {

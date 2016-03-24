@@ -34,6 +34,7 @@ define([
             this.listenTo(store, 'change:viewport', this.onViewportChange.bind(this));
 
             this.render();
+            this.onViewportChange();
         },
 
         render: function() {
@@ -55,19 +56,21 @@ define([
 
         onSpecChange: function(spec) {
             if (spec) {
-                this.onEnvironmentChange(store.getCurrentEnvironment());
-                this.onViewportChange(store.getCurrentViewport());
+                this.onEnvironmentChange();
+                this.onViewportChange();
             }
         },
 
-        onEnvironmentChange: function(env) {
+        onEnvironmentChange: function() {
+            var env = store.getCurrentEnvironment();
             if ($dom.tabs) {
                 $dom.tabs.tabs('select_tab', env);
             }
         },
 
-        onViewportChange: function(viewport) {
+        onViewportChange: function() {
             var currentSpec = store.getCurrentSpec();
+            var viewport = store.getCurrentViewport();
             if (!currentSpec) {
                 return;
             }
@@ -89,28 +92,7 @@ define([
                     icon: viewports[viewportName].icon
                 };
             });
-            this.$('#viewports').html(_.template(viewportsTemplate, {
-                viewports: data,
-                renderGauge: renderGauge
-            }));
-            var currentSpec = store.getCurrentSpec();
-            var available = currentSpec.getAvailableViewports();
-            var viewports = store.getViewports();
-            var data = _.keys(viewports).map(function(viewportName) {
-                var className = '';
-                if (available.indexOf(viewportName) < 0) {
-                    className = 'disabled';
-                } else if (viewportName === viewport) {
-                    className = 'active';
-                }
 
-                return {
-                    name: viewportName,
-                    className: className,
-                    diff: currentSpec.getDiffForViewport(viewportName),
-                    icon: viewports[viewportName].icon
-                };
-            });
             this.$('#viewports').html(_.template(viewportsTemplate, {
                 viewports: data,
                 renderGauge: renderGauge

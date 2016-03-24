@@ -14,9 +14,6 @@ define([], function() {
 
                 return [day, month, year].join('-') + ' ' + [hours, minutes, seconds].join(':');
             }
-        },
-        getImageUrl: function(url) {
-            return url ? 'results/' + url : undefined;
         }
     };
     return utils;

@@ -1,12 +1,11 @@
 'use strict';
 define([
     'app/store',
-    'utils',
     'app/view',
     'text!templates/spec/navigation.html',
     'text!templates/spec/viewports.html',
     'text!templates/radial-progress.html'
-], function(store, utils, View, viewTemplate, viewportsTemplate, gaugeTemplate) {
+], function(store, View, viewTemplate, viewportsTemplate, gaugeTemplate) {
     function renderGauge(icon, progress) {
         return _.template(gaugeTemplate, {
             progress: progress,

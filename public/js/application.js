@@ -1,6 +1,5 @@
 'use strict';
 define([
-    'utils',
     'app/store',
     'app/keyboard',
     'app/router',
@@ -9,7 +8,7 @@ define([
     'views/summary',
     'views/components/sidenav',
     'views/components/searchbox'
-], function(utils, store, keyboard, Router, ErrorView, SpecView, SummaryView, SidenavView, SearchboxView) {
+], function(store, keyboard, Router, ErrorView, SpecView, SummaryView, SidenavView, SearchboxView) {
     var views = [];
     var router = new Router();
 

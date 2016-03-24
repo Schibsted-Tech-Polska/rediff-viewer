@@ -2,9 +2,13 @@
 define([
     'app/view',
     'app/store',
-    'app/loader',
-    'utils'
-], function(View, store, loader, utils) {
+    'app/loader'
+], function(View, store, loader) {
+
+    function getImageUrl(url) {
+        return url ? 'results/' + url : undefined;
+    }
+
     var ResultView = View.extend({
         events: {},
         initialize: function() {
@@ -17,10 +21,9 @@ define([
         },
 
         render: function() {
-            this.$el.removeClass('ready');
-
             var spec = store.getCurrentSpec();
             if (spec) {
+                this.$el.removeClass('ready');
                 var result = spec.getResultForViewport(store.getCurrentViewport());
                 if (result) {
                     var environment = store.getCurrentEnvironment();
@@ -31,7 +34,7 @@ define([
                     } else {
                         var screenshots = result.get('screenshots');
                         var images = _.keys(screenshots).map(function(name) {
-                            return utils.getImageUrl(screenshots[name]);
+                            return getImageUrl(screenshots[name]);
                         }).filter(function(url) {
                             return !!url;
                         });
@@ -52,19 +55,19 @@ define([
         },
         renderImages: function() {
             var spec = store.getCurrentSpec();
+            var images = this.$('.images img');
+            images.removeClass('active');
             if (spec) {
                 var result = spec.getResultForViewport(store.getCurrentViewport());
                 if (result) {
                     var environment = store.getCurrentEnvironment();
-                    this.$('.images img.card').each(function(idx, elm) {
+                    images.each(function(idx, elm) {
                         var $elm = $(elm);
                         var env = $elm.attr('data-environment');
                         if (env === environment) {
                             $elm.addClass('active');
-                        } else {
-                            $elm.removeClass('active');
                         }
-                        $elm.attr('src', utils.getImageUrl(result.get('screenshots')[env]));
+                        $elm.attr('src', getImageUrl(result.get('screenshots')[env]));
                     });
                 }
             }

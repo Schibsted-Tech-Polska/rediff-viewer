@@ -1,12 +1,11 @@
 'use strict';
 define([
     'app/store',
-    'utils',
     'application',
     'app/view',
     'text!templates/specs-list-item.html',
     'text!templates/radial-progress.html'
-], function(store, utils, app, View, itemTemplate, progressGauge) {
+], function(store, app, View, itemTemplate, progressGauge) {
     var View = View.extend({
         events: {},
         initialize: function() {
@@ -45,7 +44,6 @@ define([
             this.collection.forEach(function(model) {
                 html += _.template(itemTemplate, {
                     model: model,
-                    utils: utils,
                     renderGauge: this.renderGauge
                 })
             }.bind(this));

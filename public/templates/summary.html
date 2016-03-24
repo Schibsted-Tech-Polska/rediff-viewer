@@ -14,15 +14,34 @@
         </span>
         <p>We found a report for the last run from <%= new Date(report.metadata.started).toISOString() %>.</p>
         <p>
-           The report contains <%= total %> tests
+           The report contains <strong><%= total %></strong> tests
             <% if(completed === total) { %>analyzed in <%= duration %>s.<% } %>
-        </p>
-        <p>
-            <strong><%= completed %></strong> tests succeed <br/>
-            <strong><%= failing %></strong> tests failed <br/>
-            <% if(pending > 0) { %>
-            <strong><%= pending %></strong> tests still in progress <br/>
-            <% } %>
         </p>
     </div>
 </div>
+
+<div class="card blue lighten-5">
+    <div class="card-content">
+        <span class="card-title blue-text">
+            <i class="material-icons">assignment</i> <strong><%= completed %></strong> tests succeed
+        </span>
+    </div>
+</div>
+
+<div class="card red lighten-5">
+    <div class="card-content">
+        <span class="card-title red-text">
+            <i class="material-icons">assignment</i> <strong><%= failing %></strong> tests failed
+        </span>
+    </div>
+</div>
+
+<% if(pending > 0) { %>
+<div class="card grey lighten-2">
+    <div class="card-content">
+        <span class="card-title black-text">
+            <i class="material-icons">assignment</i> <strong><%= pending %></strong> tests still in progress
+        </span>
+    </div>
+</div>
+<% } %>

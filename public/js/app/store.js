@@ -19,6 +19,10 @@ define([
                 });
                 report.specs[idx] = new SpecModel(spec, {parse: true});
             });
+            report.specs = _.sortBy(report.specs, function(spec) {
+                return -spec.getAverageDiff();
+            });
+
             report.environments.diff = {};
             if (firstTime) {
                 this.setCurrentEnvironment('diff');

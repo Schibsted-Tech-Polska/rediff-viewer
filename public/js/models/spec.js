@@ -9,7 +9,7 @@ define([], function() {
             var results = this.get('tests').results;
             return Math.ceil(results.reduce(function(sum, result) {
                     return sum + result.get('diff');
-                }, 0) / results.length);
+                }, 0) / results.length) || 0;
         },
         getSlug: function() {
             return this.get('name').replace(/ /g, '-')

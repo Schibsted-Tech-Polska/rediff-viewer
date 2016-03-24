@@ -16,9 +16,9 @@
 
   &.active {
     .radial-progress {
-      background: color('blue', 'lighten-2') !important;
+      background: color('blue', 'lighten-3') !important;
       .inset {
-        background: color('blue', 'lighten-1') !important;
+        background: color('blue', 'lighten-2') !important;
       }
     }
   }
@@ -51,7 +51,7 @@
   }
 
   .radial-progress .material-icons {
-    font-size: 1rem;
-    line-height: 1rem;
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, .3);
   }
 }

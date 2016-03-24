@@ -2,7 +2,7 @@ $percentage-font-size: 22px;
 $circle-size: 60px;
 $inset-size: $circle-size - 8;
 
-$percentage-font-size-small: 14px;
+$percentage-font-size-small: 13px;
 $circle-size-small: 40px;
 $inset-size-small: $circle-size-small - 6;
 
@@ -32,6 +32,7 @@ $inset-size-small: $circle-size-small - 6;
     }
   }
   .inset {
+    display: table;
     width: $inset-size;
     height: $inset-size;
     position: absolute;
@@ -40,24 +41,19 @@ $inset-size-small: $circle-size-small - 6;
 
     border-radius: 50%;
     .percentage {
-      position: absolute;
-      top: ($inset-size - $percentage-font-size) / 2;
-      left: 0;
-      height: $percentage-font-size;
+      height: 100%;
       width: 100%;
       overflow: hidden;
+      display: table-cell;
 
+      vertical-align: middle;
       text-align: center;
 
       line-height: 1;
-      .numbers {
-        width: 100%;
-        display: inline-block;
-        vertical-align: top;
-        text-align: center;
-        font-weight: 800;
-        font-size: inherit;
-      }
+    }
+    .material-icons {
+      line-height: $inset-size;
+      max-height: $inset-size;
     }
   }
 
@@ -96,8 +92,11 @@ $inset-size-small: $circle-size-small - 6;
     margin-left: ($circle-size-small - $inset-size-small)/2;
     margin-top: ($circle-size-small - $inset-size-small)/2;
     .percentage {
-      top: ($inset-size-small - $percentage-font-size-small) / 2;
-      height: $percentage-font-size-small;
+      font-size: $percentage-font-size-small;
+    }
+    .material-icons {
+      line-height: $inset-size-small;
+      max-height: $inset-size-small;
     }
   }
 }

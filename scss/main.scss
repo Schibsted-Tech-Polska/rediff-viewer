@@ -39,3 +39,9 @@ main > .hidden {
 .tabs {
     overflow: hidden;
 }
+
+/* Fix icons position in card title */
+.card-title .material-icons {
+    line-height: inherit;
+    vertical-align: top;
+}

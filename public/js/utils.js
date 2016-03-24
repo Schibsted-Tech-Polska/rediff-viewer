@@ -16,7 +16,7 @@ define([], function() {
             }
         },
         getImageUrl: function(url) {
-            return 'results/' + url;
+            return url ? 'results/' + url : undefined;
         }
     };
     return utils;

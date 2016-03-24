@@ -3,21 +3,21 @@ define([
     'app/view',
     'app/store',
     'app/loader',
-    'utils',
-    'text!templates/result.html'
-], function(View, store, loader, utils, viewTemplate) {
+    'utils'
+], function(View, store, loader, utils) {
     var ResultView = View.extend({
         events: {},
         initialize: function() {
             this.fetched = false;
+            this.listenTo(store, 'load:report', this.initializeEnvironments.bind(this));
             this.listenTo(store, 'change:environment', this.onChange.bind(this));
             this.listenTo(store, 'change:viewport', this.onChange.bind(this));
             this.listenTo(store, 'change:spec', this.onChange.bind(this));
+            this.initializeEnvironments();
         },
 
         render: function() {
             this.$el.removeClass('ready');
-            this.$el.html(_.template(viewTemplate));
 
             var spec = store.getCurrentSpec();
             if (spec) {
@@ -32,6 +32,8 @@ define([
                         var screenshots = result.get('screenshots');
                         var images = _.keys(screenshots).map(function(name) {
                             return utils.getImageUrl(screenshots[name]);
+                        }).filter(function(url) {
+                            return !!url;
                         });
 
                         loader.fetch(images)
@@ -52,23 +54,36 @@ define([
             var spec = store.getCurrentSpec();
             if (spec) {
                 var result = spec.getResultForViewport(store.getCurrentViewport());
-                var html = '';
-
                 if (result) {
                     var environment = store.getCurrentEnvironment();
-                    _.each(result.get('screenshots'), function (screenshot, env) {
-                        var activeClass = env === environment ? ' active' : '';
-                        html += '<img class="card' + activeClass + '" data-environment="' + env + '" src="' + utils.getImageUrl(screenshot) + '"/>';
-                    }.bind(this));
+                    this.$('.images img.card').each(function(idx, elm) {
+                        var $elm = $(elm);
+                        var env = $elm.attr('data-environment');
+                        if (env === environment) {
+                            $elm.addClass('active');
+                        } else {
+                            $elm.removeClass('active');
+                        }
+                        $elm.attr('src', utils.getImageUrl(result.get('screenshots')[env]));
+                    });
                 }
-
-                this.$('.images').html(html);
             }
         },
 
         onChange: function() {
             this.fetched = false;
             this.render();
+        },
+
+        initializeEnvironments: function() {
+            if (store.hasReport()) {
+                var environments = _.keys(store.getEnvironments());
+                var images = this.$('.images img.card');
+
+                environments.forEach(function (env, idx) {
+                    $(images[idx]).attr('data-environment', env);
+                });
+            }
         }
     });
     return ResultView;

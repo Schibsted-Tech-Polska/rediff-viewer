@@ -18,6 +18,7 @@ define([
             } else {
                 this.listenToOnce(store, 'load:report', this.onReportLoaded.bind(this));
             }
+            this.listenTo(store, 'change:spec', this.onSpecChange.bind(this));
         },
 
         render: function() {
@@ -32,6 +33,8 @@ define([
                 var results = spec.get('tests').results;
                 if (results.length) {
                     store.setCurrentViewport(results[0].get('viewport'));
+                } else {
+                    store.setCurrentViewport(null);
                 }
             }
         },

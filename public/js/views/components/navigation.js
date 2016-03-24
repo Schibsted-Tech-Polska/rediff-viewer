@@ -87,7 +87,7 @@ define([
                 return {
                     name: viewportName,
                     className: className,
-                    diff: result ? result.get('diff') : 0,
+                    diff: result ? result.getDiff() : 0,
                     icon: viewports[viewportName].icon
                 };
             });

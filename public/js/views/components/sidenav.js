@@ -42,7 +42,6 @@ define([
             var html = '';
 
             this.collection.forEach(function(spec) {
-                console.log(spec.get('slug'), spec.getAverageDiff());
                 html += _.template(itemTemplate, {
                     model: spec,
                     renderGauge: this.renderGauge

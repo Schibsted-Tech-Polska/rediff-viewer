@@ -1,3 +1,4 @@
+'use strict';
 define([], function() {
     var SpecModel = Backbone.Model.extend({
         defaults: {},
@@ -22,9 +23,11 @@ define([], function() {
             });
         },
         getDiffForViewport: function(viewport) {
-            return Math.ceil(this.get('tests').results.find(function(model) {
-                return model.get('viewport') === viewport;
-            }).get('diff') || 0);
+            var result = this.getResultForViewport(viewport);
+            if (!result) {
+                return 0;
+            }
+            return Math.ceil(result.get('diff'));
         },
         getResultForViewport: function(viewport) {
             return this.get('tests').results.find(function(model) {

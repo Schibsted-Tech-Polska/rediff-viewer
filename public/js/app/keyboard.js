@@ -1,3 +1,4 @@
+'use strict';
 define(['app/store'], function(store) {
     var modifiers = {};
     var codes = {
@@ -103,12 +104,12 @@ define(['app/store'], function(store) {
     }
     function previousViewport() {
         var viewportNames = _.keys(store.getViewports());
-        idx = getNewViewportIdx(viewportNames, viewportNames.indexOf(store.getCurrentViewport()), -1);
+        var idx = getNewViewportIdx(viewportNames, viewportNames.indexOf(store.getCurrentViewport()), -1);
         store.setCurrentViewport(viewportNames[idx]);
     }
     function nextViewport() {
         var viewportNames = _.keys(store.getViewports());
-        idx = getNewViewportIdx(viewportNames, viewportNames.indexOf(store.getCurrentViewport()), 1);
+        var idx = getNewViewportIdx(viewportNames, viewportNames.indexOf(store.getCurrentViewport()), 1);
         store.setCurrentViewport(viewportNames[idx]);
     }
 

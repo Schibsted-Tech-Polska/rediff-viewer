@@ -1,3 +1,4 @@
+'use strict';
 define([], function() {
     var View = Backbone.View.extend({
         // holder for each nested view

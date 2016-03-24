@@ -1,3 +1,4 @@
+'use strict';
 define([
     'models/spec',
     'models/result'

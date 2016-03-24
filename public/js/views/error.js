@@ -1,3 +1,4 @@
+'use strict';
 define([
     'app/view',
     'text!templates/error.html'

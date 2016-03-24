@@ -1,3 +1,4 @@
+'use strict';
 define([
     'app/view',
     'app/store',
@@ -9,8 +10,7 @@ define([
             'blur input': 'onChange',
             'keyup input': 'onChange'
         },
-        initialize: function(options) {
-            specsView = options.specListView;
+        initialize: function() {
             this.render();
             $input = this.$el.find('input');
         },

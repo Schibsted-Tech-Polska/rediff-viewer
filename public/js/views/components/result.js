@@ -10,60 +10,65 @@ define([
         events: {},
         initialize: function() {
             this.fetched = false;
-        },
-
-        resetModel: function() {
-            this.fetched = false;
+            this.listenTo(store, 'change:environment', this.onChange.bind(this));
+            this.listenTo(store, 'change:viewport', this.onChange.bind(this));
+            this.listenTo(store, 'change:spec', this.onChange.bind(this));
         },
 
         render: function() {
-            var environment = store.getCurrentEnvironment();
-            this.model = store.getCurrentSpec().getResultForViewport(store.getCurrentViewport());
             this.$el.removeClass('ready');
             this.$el.html(_.template(viewTemplate));
 
-            if(this.fetched) {
-                this.renderImages(environment);
-                this.trigger('ready');
-                this.$el.addClass('ready');
-            } else {
-                var screenshots = this.model.get('screenshots');
-                var images = _.keys(screenshots).map(function(name) {
-                    return utils.getImageUrl(screenshots[name]);
-                });
-
-                loader.fetch(images)
-                    .done(function() {
-                        this.fetched = true;
+            var spec = store.getCurrentSpec();
+            if (spec) {
+                var result = spec.getResultForViewport(store.getCurrentViewport());
+                if (result) {
+                    var environment = store.getCurrentEnvironment();
+                    if(this.fetched) {
                         this.renderImages(environment);
                         this.trigger('ready');
                         this.$el.addClass('ready');
-                    }.bind(this))
-                    .progress(function(progress) {
-                        this.$('.progress .determinate').width(progress + '%')
-                    }.bind(this));
+                    } else {
+                        var screenshots = result.get('screenshots');
+                        var images = _.keys(screenshots).map(function(name) {
+                            return utils.getImageUrl(screenshots[name]);
+                        });
+
+                        loader.fetch(images)
+                            .done(function() {
+                                this.fetched = true;
+                                this.renderImages();
+                                this.trigger('ready');
+                                this.$el.addClass('ready');
+                            }.bind(this))
+                            .progress(function(progress) {
+                                this.$('.progress .determinate').width(progress + '%')
+                            }.bind(this));
+                    }
+                }
             }
         },
         renderImages: function() {
-            var html = '';
-            var environment = store.getCurrentEnvironment();
-            _.each(this.model.get('screenshots'), function(screenshot, index) {
-                html += '<img class="card" data-environment="' + index + '" src="' + utils.getImageUrl(screenshot) + '"/>';
-            }.bind(this));
+            var spec = store.getCurrentSpec();
+            if (spec) {
+                var result = spec.getResultForViewport(store.getCurrentViewport());
+                var html = '';
 
-            this.$('.images').html(html);
-            this.$images = this.$('.images img');
-
-            this.onEnvironmentChange();
-        },
-        onEnvironmentChange: function(env) {
-            if (this.$images) {
-                if(env) {
-                    this.$images.filter('[data-environment="' + env + '"]').addClass('active');
-                } else {
-                    this.$images.first().addClass('active');
+                if (result) {
+                    var environment = store.getCurrentEnvironment();
+                    _.each(result.get('screenshots'), function (screenshot, env) {
+                        var activeClass = env === environment ? ' active' : '';
+                        html += '<img class="card' + activeClass + '" data-environment="' + env + '" src="' + utils.getImageUrl(screenshot) + '"/>';
+                    }.bind(this));
                 }
+
+                this.$('.images').html(html);
             }
+        },
+
+        onChange: function() {
+            this.fetched = false;
+            this.render();
         }
     });
     return ResultView;

@@ -7,7 +7,6 @@ define([
     'text!templates/spec/viewports.html',
     'text!templates/radial-progress.html'
 ], function(store, utils, View, viewTemplate, viewportsTemplate, gaugeTemplate) {
-
     function renderGauge(icon, progress) {
         return _.template(gaugeTemplate, {
             progress: progress,
@@ -30,7 +29,6 @@ define([
             'click [data-toggle="viewport"]': 'onViewportClick'
         },
         initialize: function() {
-            this.listenTo(store, 'load:report', this.onReportLoaded.bind(this));
             this.listenTo(store, 'change:spec', this.onSpecChange.bind(this));
             this.listenTo(store, 'change:environment', this.onEnvironmentChange.bind(this));
             this.listenTo(store, 'change:viewport', this.onViewportChange.bind(this));
@@ -39,20 +37,20 @@ define([
         },
 
         render: function() {
-            this.$el.html(_.template(viewTemplate, {
-                environments: store.getEnvironments()
-            }));
+            if (store.hasReport()) {
+                this.$el.html(_.template(viewTemplate, {
+                    environments: store.getEnvironments()
+                }));
 
-            $dom = {
-                tabs: this.$('ul.tabs'),
-                viewports: this.$('.viewports li')
-            };
+                $dom = {
+                    tabs: this.$('ul.tabs'),
+                    viewports: this.$('.viewports li')
+                };
 
-            $dom.tabs.tabs();
-        },
-
-        onReportLoaded: function() {
-            this.onSpecChange(store.getCurrentSpec());
+                if ($dom.tabs) {
+                    $dom.tabs.tabs();
+                }
+            }
         },
 
         onSpecChange: function(spec) {
@@ -63,11 +61,16 @@ define([
         },
 
         onEnvironmentChange: function(env) {
-            $dom.tabs.tabs('select_tab', env);
+            if ($dom.tabs) {
+                $dom.tabs.tabs('select_tab', env);
+            }
         },
 
         onViewportChange: function(viewport) {
             var currentSpec = store.getCurrentSpec();
+            if (!currentSpec) {
+                return;
+            }
             var available = currentSpec.getAvailableViewports();
             var viewports = store.getViewports();
             var data = _.keys(viewports).map(function(viewportName) {

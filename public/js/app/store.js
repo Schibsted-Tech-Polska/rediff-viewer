@@ -28,7 +28,14 @@ define([
             this.trigger('load:report', report);
         },
 
+        hasReport: function() {
+            return !!report;
+        },
+
         getSpecs: function() {
+            if (!report || !report.specs) {
+                return [];
+            }
             return report.specs;
         },
 
@@ -37,6 +44,9 @@ define([
         },
 
         isCompleteReport: function() {
+            if (!report || !report.metadata) {
+                return null;
+            }
             return report.metadata.tests.completed === report.metadata.tests.count;
         },
 
@@ -52,10 +62,16 @@ define([
         },
 
         getEnvironments: function() {
+            if (!report || !report.environments) {
+                return null;
+            }
             return report.environments;
         },
 
         getViewports: function() {
+            if (!report || !report.viewports) {
+                return null;
+            }
             return report.viewports;
         },
 
@@ -82,6 +98,9 @@ define([
         },
 
         getCurrentSpec: function() {
+            if (!report || !report.specs) {
+                return null;
+            }
             return report.specs.find(function(spec) {
                 return spec.get('slug') === currentSpecSlug;
             });

@@ -34,3 +34,8 @@ main > .hidden {
 #search {
     color: initial;
 }
+
+/* materialize fix */
+.tabs {
+    overflow: hidden;
+}

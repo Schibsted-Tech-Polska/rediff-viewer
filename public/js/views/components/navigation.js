@@ -72,6 +72,29 @@ define([
             var available = currentSpec.getAvailableViewports();
             var viewports = store.getViewports();
             var data = _.keys(viewports).map(function(viewportName) {
+                var result = currentSpec.getResultForViewport(viewportName);
+                var className = '';
+                if (available.indexOf(viewportName) < 0) {
+                    className = 'disabled';
+                } else if (viewportName === viewport) {
+                    className = 'active';
+                }
+
+                return {
+                    name: viewportName,
+                    className: className,
+                    diff: result ? result.get('diff') : 0,
+                    icon: viewports[viewportName].icon
+                };
+            });
+            this.$('#viewports').html(_.template(viewportsTemplate, {
+                viewports: data,
+                renderGauge: renderGauge
+            }));
+            var currentSpec = store.getCurrentSpec();
+            var available = currentSpec.getAvailableViewports();
+            var viewports = store.getViewports();
+            var data = _.keys(viewports).map(function(viewportName) {
                 var className = '';
                 if (available.indexOf(viewportName) < 0) {
                     className = 'disabled';

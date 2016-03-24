@@ -1,15 +1,12 @@
 define([
-    'jquery',
-    'backbone',
-    'lodash',
+    'app/view',
     'text!templates/error.html'
-], function($, Backbone, _, viewTemplate) {
-    var View = Backbone.View.extend({
+], function(View, viewTemplate) {
+    var ErrorView = View.extend({
         events: {},
         render: function() {
-            console.log('error view render')
             this.$el.html(_.template(viewTemplate));
         }
     });
-    return View;
+    return ErrorView;
 });

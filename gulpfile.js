@@ -38,11 +38,7 @@ gulp.task('js', function() {
             optimize: 'none',
             paths: {
                 'text': 'vendor/requirejs/text',
-                'templates': '../templates',
-                'jquery': 'empty:',
-                'lodash': 'empty:',
-                'backbone': 'empty:',
-                'materialize': 'vendor/materialize.amd'
+                'templates': '../templates'
             },
             out: "bootstrap.min.js"
         }))

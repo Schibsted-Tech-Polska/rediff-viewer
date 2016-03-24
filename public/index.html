@@ -8,22 +8,24 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,100,500,700" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css" />
 
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body class="grey lighten-4">
-<nav class="side-nav fixed black-text">
+<nav class="side-nav fixed">
     <div class="logo">
         <div class="rediff-logo"><span>RE</span></div>
     </div>
 
-    <ul class="specs-list-view-container">
-    </ul>
+    <div id="searchbox-container"></div>
+    <div id="spec-list" class="collection"></div>
 </nav>
 
 <main>
-    <div class="container current-view-container">
-    </div>
+    <div id="error-container" class="container hidden"></div>
+    <div id="spec-container" class="container hidden"></div>
+    <div id="summary-container" class="container hidden"></div>
 </main>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -32,8 +34,14 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script>window._ || document.write('<script src="js/vendor/lodash-2.4.1.min.js"><\/script>')</script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.2/backbone-min.js"></script>
 <script>window.Backbone || document.write('<script src="js/vendor/backbone-1.1.2.min.js"><\/script>')</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.6/hammer.min.js"></script>
+<script>window.Hammer || document.write('<script src="js/vendor/hammer.min.js"><\/script>')</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+<script>window.Materialize || document.write('<script src="js/vendor/materialize.min.js"><\/script>')</script>
 
 <script data-main="js/bootstrap" src="js/vendor/require.js"></script>
 </body>

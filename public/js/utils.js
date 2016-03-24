@@ -1,4 +1,4 @@
-define(['utils/storage'], function(storage) {
+define([], function() {
     var utils = {
         format: {
             date: function(date) {
@@ -14,24 +14,6 @@ define(['utils/storage'], function(storage) {
                 return [day, month, year].join('-') + ' ' + [hours, minutes, seconds].join(':');
             }
         },
-        getDiffColor: function(diff) {
-            var color = 'green';
-
-            if(diff > 25) {
-                color = 'yellow';
-            }
-
-            if(diff > 50) {
-                color = 'orange';
-            }
-
-            if(diff > 75) {
-                color = 'red';
-            }
-
-            return color;
-        },
-        storage: storage,
         getImageUrl: function(url) {
             return 'results/' + url;
         }

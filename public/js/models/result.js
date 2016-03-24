@@ -1,21 +1,10 @@
-define([
-    'jquery',
-    'backbone',
-    'lodash'
-], function($, Backbone, _) {
-    var Model = Backbone.Model.extend({
+define([], function() {
+    var ResultModel = Backbone.Model.extend({
         defaults: {},
-        initialize: function(attributes) {
-        },
+        initialize: function(attributes) {},
         parse: function(data) {
             return data;
-        },
-        getScreenshot: function(env) {
-            return this.get('screenshots')[env];
-        },
-        getEnvironments: function() {
-            return _.keys(this.get('screenshots'));
         }
     });
-    return Model;
+    return ResultModel;
 });

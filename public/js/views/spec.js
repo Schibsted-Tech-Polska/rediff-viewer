@@ -1,88 +1,88 @@
 define([
-    'jquery',
-    'backbone',
-    'lodash',
-    'utils',
+    'app/view',
+    'app/store',
     'application',
-    'models/spec',
-    'views/spec/details',
-    'views/spec/navigation',
-    'views/spec/result',
+    'views/components/details',
+    'views/components/navigation',
+    'views/components/result',
     'text!templates/spec.html'
-], function($, Backbone, _, utils, Application, Spec, DetailsView, NavigationView, ResultView, viewTemplate) {
-    var View = Backbone.View.extend({
+], function(View, store, Application, DetailsView, NavigationView, ResultView, viewTemplate) {
+    var SpecView = View.extend({
         events: {},
-        initialize: function(options, slug) {
-            var report = utils.storage.use('application').get('report');
+        initialize: function() {
+            this.listenTo(store, 'change:environment', this.onEnvironmentChange.bind(this));
+            this.listenTo(store, 'change:viewport', this.onViewportChange.bind(this));
+            this.listenTo(store, 'change:spec', this.onSpecChange.bind(this));
+            this.listenToOnce(store, 'load:report', this.onReportLoaded.bind(this));
 
-            if(!report) {
-                return Application.router.navigate('!/run', {
-                    trigger: true,
-                    replace: true
-                });
-            } else {
-                this.model = new Spec(_.find(report.specs, {name: slug}), {
-                    parse: true
-                });
-            }
+            this.preRender();
         },
-        destroy: function() {
-            this.detailsView.destroy();
-            this.navigationView.destroy();
-            _.each(this.resultViews, function(view) {
-                view.destroy();
-            });
-        },
-        render: function() {
+
+        preRender: function() {
             this.$el.html(_.template(viewTemplate, {model: this.model}));
-
-            this.detailsView = new DetailsView({
-                model: this.model,
-                el: this.$('.details')
-            });
-
-            this.navigationView = new NavigationView({
-                model: this.model,
-                el: this.$('.navigation')
-            });
-
-            var $result = this.$('.result-view');
-            this.resultViews = {};
-            this.model.get('results').each(function(model) {
-                this.resultViews[model.get('viewport').name] = new ResultView({
-                    model: model,
-                    el: $result
-                });
-            }.bind(this));
-
-            this.listenTo(this.navigationView, 'change:environment', this.onEnvironmentChange.bind(this));
-            this.listenTo(this.navigationView, 'change:viewport', this.onViewportChange.bind(this));
-
-            this.detailsView.render();
-            this.navigationView.render();
-
-            this.currentEnvironment = this.navigationView.getCurrentEnvironment();
-
-            this.getCurrentResultView().render(this.currentEnvironment);
         },
 
-        getCurrentResultView: function(viewport) {
-            if(viewport) {
-                this.currentViewport = viewport;
-            } else if(!this.currentViewport) {
-                this.currentViewport = this.model.get('results').at(0).get('viewport').name;
+        render: function() {
+            var $result = this.$('.result-view');
+            if (this.model) {
+                this.model.get('tests').results.forEach(function (result) {
+                    var view = this.getSubView('results-' + result.get('viewport'));
+                    if(!view) {
+                        view = new ResultView({
+                            model: result,
+                            el: $result
+                        });
+                        this.addSubView('results-' + result.get('viewport'), view);
+                    } else {
+                        view.resetModel();
+                    }
+                    view.render();
+                }.bind(this));
             }
-            return this.resultViews[this.currentViewport];
+        },
+
+        onSpecChange: function(spec) {
+            if (!spec.hasViewport(store.getCurrentViewport())) {
+                var results = spec.get('tests').results;
+                if (results.length) {
+                    store.setCurrentViewport(results[0].get('viewport'));
+                }
+            }
+            if (spec) {
+                this.model = spec;
+                this.render();
+            }
+        },
+
+        getCurrentResultsView: function() {
+            return this.getSubView('results-' + store.getCurrentViewport());
         },
 
         onEnvironmentChange: function(environment) {
-            this.currentEnvironment = environment;
-            this.getCurrentResultView().trigger('change:environment', environment);
+            var view = this.getCurrentResultsView();
+            if (view) {
+                view.onEnvironmentChange(environment);
+            }
         },
 
-        onViewportChange: function(viewport) {
-            this.getCurrentResultView(viewport).render(this.currentEnvironment);
+        onViewportChange: function() {
+            var view = this.getCurrentResultsView();
+            if(view) {
+                view.render();
+            }
+        },
+
+        onReportLoaded: function() {
+            this.addSubView('details', new DetailsView({
+                el: this.$('.details')
+            }));
+
+            this.addSubView('navigation', new NavigationView({
+                viewports: store.getViewports(),
+                environments: store.getEnvironments(),
+                el: this.$('.navigation')
+            }));
         }
     });
-    return View;
+    return SpecView;
 });

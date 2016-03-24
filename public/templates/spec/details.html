@@ -1,12 +1,6 @@
-<div class="card-panel blue lighten-1 white-text row">
-    <div class="col s8">
-        <% _.each(environments, function(environment, name) { %>
-        <a href="<%= environment.baseUrl + model.get('url') %>"
-           target="_<%= name %>"
-           class="btn grey lighten-2 grey-text text-darken-3"
-           data-tooltip="<%= environment.baseUrl + model.get('url') %>">
-            <i class="material-icons">launch</i> <%= name %>
-        </a>
-        <% }) %>
-    </div>
-</div>
+<% _.each(environments, function(environment, name) { %>
+    <a href="<%= environment.baseUrl + model.get('url') %>"
+       target="_<%= name %>_env" class="btn grey lighten-2 grey-text text-darken-3">
+        <i class="material-icons left">launch</i> <%= name %>
+    </a>
+<% }) %>

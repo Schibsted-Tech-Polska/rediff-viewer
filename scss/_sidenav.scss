@@ -1,0 +1,57 @@
+.collection-item {
+  position: relative;
+
+  &.hidden {
+    display: none !important;
+  }
+
+  &:hover {
+    .radial-progress {
+      background: color('grey', 'lighten-3') !important;
+      .inset {
+        background: color('grey', 'lighten-2') !important;
+      }
+    }
+  }
+
+  &.active {
+    .radial-progress {
+      background: color('blue', 'lighten-2') !important;
+      .inset {
+        background: color('blue', 'lighten-1') !important;
+      }
+    }
+  }
+
+  .content {
+    padding: 0 $sidenav-padding-right;
+    display: table;
+    & > span {
+      display: table-cell !important;
+      vertical-align: middle;
+      &:last-child {
+        width: 1%;
+        padding-left: $sidenav-padding-right;
+      }
+    }
+  }
+
+  .content,
+  .progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+
+  .progress .determinate {
+      background: rgba(color('red', 'lighten-2'), .6);
+  }
+
+  .radial-progress .material-icons {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+}

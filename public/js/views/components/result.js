@@ -36,8 +36,9 @@ define([
                         return !!url;
                     });
 
-                    loader.fetch(images)
-                        .done(function() {
+                    loader.fetch(images, {
+                         'Accept-Encoding': 'gzip'
+                    }).done(function() {
                             this.renderImages();
                             this.trigger('ready');
                             this.$el.addClass('ready');

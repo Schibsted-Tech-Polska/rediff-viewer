@@ -2,7 +2,8 @@
 define([], function() {
     var cache = {};
     var Loader = {
-        fetch: function(arr) {
+        fetch: function(arr, headers) {
+            headers = headers || {};
             var deferreds = [];
             var progress = [];
             var response = new $.Deferred();
@@ -19,6 +20,7 @@ define([], function() {
                     progress[i] = 0;
                     request = cache[url] = $.ajax({
                         url: url,
+                        headers: headers,
                         xhr: function() {
                             var xhr = new window.XMLHttpRequest();
                             xhr.addEventListener("progress", function(event) {

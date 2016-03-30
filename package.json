@@ -1,6 +1,6 @@
 {
   "name": "rediff-viewer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Report viewer for Rediff",
   "author": "Lukasz Blacha <lukasz.blacha@schibsted.pl>",
   "license": "MIT",

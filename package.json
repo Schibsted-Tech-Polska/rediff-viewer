@@ -7,7 +7,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Schibsted-Tech-Polska/pediff.git"
+    "url": "https://github.com/Schibsted-Tech-Polska/rediff-viewer.git"
   },
   "scripts": {
     "prepublish": "gulp build",

@@ -39,10 +39,7 @@ define([], function() {
                 deferreds.push(request);
             });
 
-            $.when.apply($, deferreds).always(function() {
-                response.resolve();
-            });
-
+            $.when.apply($, deferreds).always(response.resolve);
             return response;
         }
     };

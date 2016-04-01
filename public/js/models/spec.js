@@ -9,7 +9,7 @@ define([], function() {
             var results = this.get('tests').results;
             return Math.ceil(results.reduce(function(sum, result) {
                     return sum + result.get('diff');
-                }, 0) / results.length) || 0;
+                }, 0) / results.length);
         },
         hasViewport: function(name) {
             return this.getViewports().indexOf(name) >= 0;

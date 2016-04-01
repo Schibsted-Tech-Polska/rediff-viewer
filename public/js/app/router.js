@@ -20,8 +20,8 @@ define([
         },
 
         spec: function(slug) {
-            store.setCurrentSpecSlug(slug);
             this.trigger('change:view', 'spec', slug);
+            store.setCurrentSpecSlug(slug);
         },
 
         error: function() {

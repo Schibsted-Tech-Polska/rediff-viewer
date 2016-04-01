@@ -13,6 +13,11 @@ define([
         setReport: function(r) {
             var firstTime = report === undefined;
             report = r;
+            report.specs = report.specs || [];
+            report.viewports = report.viewports || {};
+            report.environments = report.environments || {};
+            report.metadata = report.metadata || {};
+
             report.specs.forEach(function(spec, idx) {
                 spec.tests.results.forEach(function(result, resultIdx) {
                     spec.tests.results[resultIdx] = new ResultModel(result);
@@ -20,16 +25,18 @@ define([
                 report.specs[idx] = new SpecModel(spec, {parse: true});
             });
             report.specs = _.sortBy(report.specs, function(spec) {
-                return -spec.getAverageDiff();
+                var avgDiff = spec.getAverageDiff();
+                return isNaN(avgDiff) ? 1 : -avgDiff;
             });
 
             report.environments.diff = {};
+
+            this.trigger('load:report', report);
+
             if (firstTime) {
                 this.setCurrentEnvironment('diff');
                 this.setCurrentViewport(_.keys(report.viewports)[0]);
             }
-
-            this.trigger('load:report', report);
         },
 
         hasReport: function() {
@@ -37,7 +44,7 @@ define([
         },
 
         getSpecs: function() {
-            if (!report || !report.specs) {
+            if (!report) {
                 return [];
             }
             return report.specs;
@@ -48,8 +55,8 @@ define([
         },
 
         isCompleteReport: function() {
-            if (!report || !report.metadata) {
-                return null;
+            if (!report) {
+                return false;
             }
             return report.metadata.tests.completed === report.metadata.tests.count;
         },
@@ -60,14 +67,14 @@ define([
         },
 
         getEnvironments: function() {
-            if (!report || !report.environments) {
+            if (!report) {
                 return null;
             }
             return report.environments;
         },
 
         getViewports: function() {
-            if (!report || !report.viewports) {
+            if (!report) {
                 return null;
             }
             return report.viewports;

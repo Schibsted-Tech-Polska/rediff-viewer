@@ -14,7 +14,7 @@
         </span>
         <p>We found a report for the last run from <%= new Date(report.metadata.started).toISOString() %>.</p>
         <p>
-           The report contains <strong><%= total %></strong> tests
+           The report contains <strong><%= completed %></strong> out of <strong><%= total %></strong> tests
             <% if(completed === total) { %>analyzed in <%= duration %>s.<% } %>
         </p>
     </div>
@@ -23,7 +23,7 @@
 <div class="card blue lighten-2">
     <div class="card-content">
         <span class="card-title white-text">
-            <i class="material-icons">assignment</i> <strong><%= completed %></strong> tests succeed
+            <i class="material-icons">info_outline</i> <strong><%= completed - failing %></strong> tests succeed
         </span>
     </div>
 </div>
@@ -32,7 +32,7 @@
 <div class="card red lighten-2">
     <div class="card-content">
         <span class="card-title white-text">
-            <i class="material-icons">assignment</i> <strong><%= failing %></strong> tests failed
+            <i class="material-icons">error_outline</i> <strong><%= failing %></strong> tests failed
         </span>
     </div>
 </div>
@@ -42,8 +42,34 @@
 <div class="card grey lighten-2">
     <div class="card-content">
         <span class="card-title black-text">
-            <i class="material-icons">assignment</i> <strong><%= pending %></strong> tests still in progress
+            <i class="material-icons">query_builder</i> <strong><%= pending %></strong> tests still in progress
         </span>
     </div>
 </div>
 <% } %>
+
+<div class="card">
+    <div class="card-content">
+        <span class="card-title black-text">
+            Keyboard navigation
+        </span>
+        <p class="keyboard-shortcuts">
+            <span>&larr;</span> select previous environment
+        </p>
+        <p class="keyboard-shortcuts">
+            <span>&rarr;</span> select next environment
+        </p>
+        <p class="keyboard-shortcuts">
+            <span>cmd</span> + <span>&larr;</span> select previous viewport
+        </p>
+        <p class="keyboard-shortcuts">
+            <span>cmd</span> + <span>&rarr;</span> select next viewport
+        </p>
+        <p class="keyboard-shortcuts">
+            <span>cmd</span> + <span>&uarr;</span> select previous spec
+        </p>
+        <p class="keyboard-shortcuts">
+            <span>cmd</span> + <span>&darr;</span> select next spec
+        </p>
+    </div>
+</div>

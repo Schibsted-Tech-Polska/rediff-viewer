@@ -28,8 +28,8 @@ define([
 
         url = url.replace(window.location.hash, '');
 
-        if(url.indexOf('public/index.html') > -1) {
-            url = url.replace('public/index.html', 'public/results/report.json');
+        if(url.indexOf('/index.html') > -1) {
+            url = url.replace('/index.html', '/results/report.json');
         } else {
             url += 'results/report.json';
         }
